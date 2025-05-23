@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +10,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/bootstrap-dark-overrides.css">
-  <link rel="stylesheet" href="/css/login-contained.css">
+  <link rel="stylesheet" href="/css/login-fullscreen.css">
   <meta name="description" content="Verify the authenticity of your products with our secure QR code verification system.">
   <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+  <meta name="theme-color" content="#4e73df">
+  <meta name="color-scheme" content="light dark">
 </head>
 <body>
   <% if (typeof user !== 'undefined' && user) { %>
@@ -89,7 +91,15 @@
   <% } %>
 
   <div class="container py-4">
-    <%- body %>
+    <% if (typeof body !== 'undefined') { %>
+      <%- body %>
+    <% } else { %>
+      <!-- Fallback content if body is not defined -->
+      <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        Content could not be loaded. Please try again later.
+      </div>
+    <% } %>
   </div>
 
   <footer class="py-4 text-center">

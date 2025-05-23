@@ -34,9 +34,11 @@
 [data-theme="dark"] {
   --bg-color: #1e1e2d;
   --bg-secondary: #2a2a3c;
+  --bg-tertiary: #323248;
   --bg-secondary-rgb: 42, 42, 60;
   --text-color: #e0e0e0;
-  --text-muted: #b1b1c3;
+  --text-secondary: #b5b5c3;
+  --text-muted: #7e8299;
   --border-color: #3f3f5f;
   --card-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.3);
   --navbar-bg: linear-gradient(to right, #2d2d40, #1e1e2d);
@@ -48,6 +50,16 @@
   
   /* Override Bootstrap text colors for dark mode */
   --bs-body-color: #e0e0e0;
+  --bs-body-bg: #1e1e2d;
+  --bs-secondary-color: #7e8299;
+  --bs-tertiary-color: #b5b5c3;
+  --bs-border-color: #3f3f5f;
+  --bs-border-color-translucent: rgba(63, 63, 95, 0.5);
+  
+  /* Card colors */
+  --card-bg: #2a2a3c;
+  --card-header-bg: #323248;
+  --card-footer-bg: #323248;
   --bs-body-bg: #1e1e2d;
   --bs-secondary-color: #b1b1c3;
   --bs-dark-rgb: 42, 42, 60;
@@ -514,6 +526,214 @@ input:checked + .slider:before {
 /* Fix for lead text in dark mode */
 [data-theme="dark"] .lead {
   color: var(--text-color);
+}
+
+/* Dark mode specific overrides */
+[data-theme="dark"] .card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .card-header {
+  background-color: var(--card-header-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .card-footer {
+  background-color: var(--card-footer-bg);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .table {
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .table-hover tbody tr:hover {
+  color: var(--text-color);
+  background-color: var(--hover-bg);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+  background-color: var(--input-bg);
+  border-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .input-group-text {
+  background-color: var(--bg-tertiary);
+  border-color: var(--input-border);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .modal-content {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .list-group-item {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .text-muted {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-color);
+}
+
+/* Fix for navbar in dark mode */
+[data-theme="dark"] .navbar-dark {
+  background: var(--navbar-bg);
+}
+
+/* Fix for product cards in dark mode */
+[data-theme="dark"] .product-card .card-header,
+[data-theme="dark"] .product-card .card-footer {
+  background-color: var(--card-header-bg);
+}
+
+/* Fix for form text in dark mode */
+[data-theme="dark"] .form-text {
+  color: var(--text-muted);
+}
+
+/* Dark mode utility classes */
+.dark-input {
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+  color: var(--text-color) !important;
+}
+
+.dark-input:focus {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.25) !important;
+}
+
+.dark-list-item {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-color) !important;
+}
+
+.dark-modal {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark-modal .modal-header,
+.dark-modal .modal-footer {
+  border-color: var(--border-color) !important;
+}
+
+.dark-btn-outline {
+  color: var(--text-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark-btn-outline:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-color) !important;
+}
+
+/* Transition styles for theme switching */
+body, 
+.card, 
+.card-header, 
+.card-body, 
+.card-footer,
+.navbar,
+.form-control,
+.form-select,
+.btn,
+.badge,
+.alert,
+.modal-content,
+.list-group-item,
+.table,
+.nav-link,
+.dropdown-menu,
+.dropdown-item {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease, 
+              box-shadow 0.3s ease;
+}
+
+/* Verification code badge that works in both light and dark modes */
+.verification-code-badge {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  font-family: monospace;
+  letter-spacing: 0.05rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dynamic styling for verification code badge */
+[data-theme="light"] .verification-code-badge {
+  background-color: #f8f9fc;
+  color: #5a5c69;
+}
+
+[data-theme="dark"] .verification-code-badge {
+  background-color: #2a2a3c;
+  color: #e0e0e0;
+}
+
+/* Hover effect for verification code badge */
+.verification-code-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+/* Animation for verification code badge */
+.verification-code-badge:active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(var(--primary-color-rgb), 0.2);
+  animation: badge-ripple 0.6s ease-out;
+}
+
+@keyframes badge-ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
 
 /* Fix for display headings in dark mode */

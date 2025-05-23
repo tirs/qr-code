@@ -12,7 +12,36 @@
   --bs-light-rgb: 248, 249, 252;
   --bs-dark-rgb: 224, 224, 224;
   
+  /* Custom variables for dark mode */
+  --dark-bg-primary: #1e1e2d;
+  --dark-bg-secondary: #2a2a3c;
+  --dark-bg-tertiary: #323248;
+  --dark-text-primary: #e0e0e0;
+  --dark-text-secondary: #b5b5c3;
+  --dark-text-muted: #7e8299;
+  --dark-border-color: #3f3f5f;
+  
   /* Override Bootstrap components */
+  
+  /* Global text colors */
+  color: var(--dark-text-primary);
+  
+  /* Card styling */
+  .card {
+    background-color: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color);
+  }
+  
+  .card-header {
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-primary);
+  }
+  
+  .card-footer {
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--dark-border-color);
+  }
   
   /* Buttons */
   .btn-outline-dark {
@@ -31,27 +60,39 @@
     border-color: #e0e0e0;
   }
   
+  .btn-outline-secondary {
+    color: #b5b5c3;
+    border-color: #3f3f5f;
+  }
+  
+  .btn-outline-secondary:hover {
+    background-color: #3f3f5f;
+    border-color: #3f3f5f;
+    color: #e0e0e0;
+  }
+  
   /* Modals */
   .modal-content {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-color);
+    background-color: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-primary);
   }
   
   .modal-header, .modal-footer {
-    border-color: var(--border-color);
+    border-color: var(--dark-border-color);
   }
   
   /* List groups */
   .list-group-item {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-color);
-    color: var(--text-color);
+    background-color: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-primary);
   }
   
   /* Pagination */
   .page-link {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-color);
+    background-color: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color);
     color: var(--primary-color);
   }
   
@@ -61,31 +102,36 @@
   }
   
   .page-item.disabled .page-link {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-color);
-    color: var(--text-muted);
+    background-color: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-muted);
   }
   
   /* Navs and tabs */
   .nav-tabs {
-    border-color: var(--border-color);
+    border-color: var(--dark-border-color);
   }
   
   .nav-tabs .nav-link {
-    color: var(--text-color);
+    color: var(--dark-text-primary);
   }
   
   .nav-tabs .nav-link.active {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-color) var(--border-color) var(--bg-secondary);
+    background-color: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color) var(--dark-border-color) var(--dark-bg-secondary);
     color: var(--primary-color);
+  }
+  
+  /* Navbar */
+  .navbar-dark {
+    background-color: var(--dark-bg-primary);
   }
   
   /* Alerts */
   .alert {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-color);
-    color: var(--text-color);
+    background-color: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-primary);
   }
   
   .alert-danger {
@@ -94,25 +140,43 @@
     color: #e57373;
   }
   
+  .alert-success {
+    background-color: rgba(28, 200, 138, 0.15);
+    border-color: rgba(28, 200, 138, 0.4);
+    color: #81c784;
+  }
+  
+  .alert-warning {
+    background-color: rgba(246, 194, 62, 0.15);
+    border-color: rgba(246, 194, 62, 0.4);
+    color: #ffd54f;
+  }
+  
+  .alert-info {
+    background-color: rgba(54, 185, 204, 0.15);
+    border-color: rgba(54, 185, 204, 0.4);
+    color: #4dd0e1;
+  }
+  
   /* Form controls */
   .form-control,
   .form-select {
-    background-color: var(--input-bg);
-    border-color: var(--input-border);
-    color: var(--text-color);
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-primary);
   }
   
   .form-control:focus,
   .form-select:focus {
-    background-color: var(--input-bg);
+    background-color: var(--dark-bg-tertiary);
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.25);
-    color: var(--text-color);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+    color: var(--dark-text-primary);
   }
   
   .form-check-input {
-    background-color: var(--input-bg);
-    border-color: var(--input-border);
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--dark-border-color);
   }
   
   .form-check-input:checked {
@@ -121,34 +185,40 @@
   }
   
   .input-group-text {
-    background-color: var(--bg-color);
-    border-color: var(--input-border);
-    color: var(--text-color);
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-primary);
+  }
+  
+  .form-text {
+    color: var(--dark-text-muted);
   }
   
   /* Tables */
   .table {
     --bs-table-bg: transparent;
     --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
-    --bs-table-striped-color: var(--text-color);
+    --bs-table-striped-color: var(--dark-text-primary);
     --bs-table-active-bg: rgba(255, 255, 255, 0.1);
-    --bs-table-active-color: var(--text-color);
+    --bs-table-active-color: var(--dark-text-primary);
     --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
-    --bs-table-hover-color: var(--text-color);
+    --bs-table-hover-color: var(--dark-text-primary);
+    color: var(--dark-text-primary);
   }
   
   .table-bordered {
-    border-color: var(--border-color);
+    border-color: var(--dark-border-color);
   }
   
   .table-bordered th,
   .table-bordered td {
-    border-color: var(--border-color);
+    border-color: var(--dark-border-color);
   }
   
   /* Badges */
   .badge.bg-light {
-    color: #1e1e2d;
+    background-color: #3f3f5f !important;
+    color: #e0e0e0 !important;
   }
   
   .badge.bg-dark {
@@ -156,8 +226,69 @@
     color: #1e1e2d;
   }
   
+  .badge.bg-secondary {
+    background-color: #3f3f5f !important;
+    color: #e0e0e0 !important;
+  }
+  
+  /* Fix for code display in dark mode */
+  .badge.text-dark {
+    color: #e0e0e0 !important;
+  }
+  
   /* Progress bars */
   .progress {
-    background-color: var(--bg-color);
+    background-color: var(--dark-bg-primary);
+  }
+  
+  /* Toasts */
+  .toast {
+    background-color: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color);
+  }
+  
+  .toast-header {
+    background-color: var(--dark-bg-tertiary);
+    color: var(--dark-text-primary);
+    border-color: var(--dark-border-color);
+  }
+  
+  /* Text colors */
+  .text-muted {
+    color: var(--dark-text-muted) !important;
+  }
+  
+  /* Dropdowns */
+  .dropdown-menu {
+    background-color: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color);
+  }
+  
+  .dropdown-item {
+    color: var(--dark-text-primary);
+  }
+  
+  .dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--dark-bg-tertiary);
+    color: var(--dark-text-primary);
+  }
+  
+  .dropdown-divider {
+    border-color: var(--dark-border-color);
+  }
+  
+  /* Breadcrumbs */
+  .breadcrumb {
+    background-color: var(--dark-bg-tertiary);
+  }
+  
+  .breadcrumb-item.active {
+    color: var(--dark-text-secondary);
+  }
+  
+  /* Tooltips */
+  .tooltip .tooltip-inner {
+    background-color: var(--dark-bg-tertiary);
+    color: var(--dark-text-primary);
   }
 }
