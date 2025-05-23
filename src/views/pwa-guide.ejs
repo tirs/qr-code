@@ -110,6 +110,25 @@
             <p class="text-muted mt-3">
               <small>If the button doesn't work, follow the manual instructions above for your device.</small>
             </p>
+            
+            <!-- Direct install buttons for different browsers -->
+            <div class="mt-4">
+              <p><strong>Or try these direct install options:</strong></p>
+              <div class="d-flex flex-wrap justify-content-center gap-2">
+                <button onclick="window.location.href='https://support.google.com/chrome/answer/9658361'" class="btn btn-outline-secondary btn-sm">
+                  <i class="bi bi-google me-1"></i>Chrome
+                </button>
+                <button onclick="window.location.href='https://support.apple.com/guide/safari/bookmark-favorite-webpages-ibrw1039/mac'" class="btn btn-outline-secondary btn-sm">
+                  <i class="bi bi-apple me-1"></i>Safari
+                </button>
+                <button onclick="window.location.href='https://support.microsoft.com/en-us/microsoft-edge/add-a-website-to-apps-in-microsoft-edge-0c8bfde3-ba0e-4b61-a1ea-eac8b969ee6d'" class="btn btn-outline-secondary btn-sm">
+                  <i class="bi bi-microsoft me-1"></i>Edge
+                </button>
+                <button onclick="window.location.href='https://support.mozilla.org/en-US/kb/add-web-page-shortcuts-your-home-screen'" class="btn btn-outline-secondary btn-sm">
+                  <i class="bi bi-firefox me-1"></i>Firefox
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -118,6 +137,22 @@
 </div>
 
 <script>
+  // Store the installation prompt
+  let installPrompt = null;
+  
+  // Listen for the beforeinstallprompt event
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    installPrompt = e;
+    console.log('Install prompt captured on guide page');
+    
+    // Enable the install button
+    const installBtn = document.getElementById('install-guide-btn');
+    if (installBtn) {
+      installBtn.disabled = false;
+    }
+  });
+  
   document.addEventListener('DOMContentLoaded', function() {
     // Show the appropriate installation instructions based on the user's device
     function showRelevantInstructions() {
@@ -141,8 +176,49 @@
     // Show the relevant instructions when the page loads
     showRelevantInstructions();
     
+    // Set up the install button
+    const installBtn = document.getElementById('install-guide-btn');
+    if (installBtn) {
+      installBtn.addEventListener('click', function() {
+        // Try to use the stored prompt first
+        if (installPrompt) {
+          console.log('Using locally stored prompt');
+          installPrompt.prompt();
+          
+          installPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the installation');
+              installBtn.disabled = true;
+              installBtn.textContent = 'Installed!';
+            }
+            installPrompt = null;
+          });
+        } 
+        // Fall back to the global prompt
+        else if (window.deferredPrompt) {
+          console.log('Using global prompt');
+          window.deferredPrompt.prompt();
+          
+          window.deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the installation');
+              installBtn.disabled = true;
+              installBtn.textContent = 'Installed!';
+            }
+            window.deferredPrompt = null;
+          });
+        } 
+        // No prompt available, show instructions
+        else {
+          console.log('No installation prompt available, showing manual instructions');
+          showRelevantInstructions();
+        }
+      });
+    }
+    
     // Log installation status for debugging
     console.log('Installation guide page loaded');
-    console.log('Installation prompt available:', !!window.deferredPrompt);
+    console.log('Local prompt available:', !!installPrompt);
+    console.log('Global prompt available:', !!window.deferredPrompt);
   });
 </script>

@@ -24,6 +24,62 @@
   <link rel="apple-touch-icon" href="/img/icon-192x192.png">
   <meta name="msapplication-TileImage" content="/img/icon-192x192.png">
   <meta name="msapplication-TileColor" content="#4e73df">
+  
+  <!-- Inline PWA Installation Script -->
+  <script>
+    // Global variable to store the installation prompt
+    let deferredPrompt;
+    
+    // Listen for the beforeinstallprompt event
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      
+      // Store the event for later use
+      deferredPrompt = e;
+      
+      // Show the install button if it exists
+      const installBtn = document.getElementById('add-to-home');
+      if (installBtn) {
+        installBtn.classList.remove('d-none');
+      }
+      
+      console.log('Install prompt captured');
+    });
+    
+    // Function to handle installation
+    function installApp() {
+      if (!deferredPrompt) {
+        console.log('No installation prompt available');
+        window.location.href = '/install';
+        return;
+      }
+      
+      // Show the prompt
+      deferredPrompt.prompt();
+      
+      // Wait for the user to respond
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the installation');
+          
+          // Hide the button
+          const installBtn = document.getElementById('add-to-home');
+          if (installBtn) {
+            installBtn.classList.add('d-none');
+          }
+        }
+        
+        // Clear the prompt
+        deferredPrompt = null;
+      });
+    }
+    
+    // Handle app installed event
+    window.addEventListener('appinstalled', (evt) => {
+      console.log('App was installed');
+    });
+  </script>
 </head>
 <body>
   <% if (typeof user !== 'undefined' && user) { %>
@@ -154,7 +210,7 @@
   
   <!-- Add to Home Screen Button (hidden by default, shown when installation is possible) -->
   <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-    <button id="add-to-home" class="btn btn-primary rounded-pill shadow-sm d-none">
+    <button id="add-to-home" class="btn btn-primary rounded-pill shadow-sm d-none" onclick="installApp()">
       <i class="bi bi-download me-2"></i>Install App
     </button>
   </div>
