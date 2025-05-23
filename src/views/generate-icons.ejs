@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate PWA Icons</title>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .icon-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px 0;
+    }
+    canvas {
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
+    .instructions {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .btn {
+      background-color: #4e73df;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .btn:hover {
+      background-color: #2e59d9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Generate PWA Icons</h1>
+  
+  <div class="instructions">
+    <h3>Instructions:</h3>
+    <ol>
+      <li>This tool will generate the required PWA icons based on your logo</li>
+      <li>Click the "Generate Icons" button to create the icons</li>
+      <li>Right-click on each icon and select "Save Image As..." to download</li>
+      <li>Save the 192x192 icon as "icon-192x192.png" in the /src/public/img/ folder</li>
+      <li>Save the 512x512 icon as "icon-512x512.png" in the /src/public/img/ folder</li>
+    </ol>
+  </div>
+  
+  <div class="icon-container">
+    <h3>192x192 Icon</h3>
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <a id="download192" class="btn">Download 192x192 Icon</a>
+  </div>
+  
+  <div class="icon-container">
+    <h3>512x512 Icon</h3>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+    <a id="download512" class="btn">Download 512x512 Icon</a>
+  </div>
+  
+  <button id="generate" class="btn">Generate Icons</button>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const canvas192 = document.getElementById('canvas192');
+      const canvas512 = document.getElementById('canvas512');
+      const ctx192 = canvas192.getContext('2d');
+      const ctx512 = canvas512.getContext('2d');
+      const download192 = document.getElementById('download192');
+      const download512 = document.getElementById('download512');
+      const generateBtn = document.getElementById('generate');
+      
+      // Function to draw QR code icon
+      function drawQRIcon(ctx, size) {
+        // Clear canvas
+        ctx.clearRect(0, 0, size, size);
+        
+        // Background
+        ctx.fillStyle = '#4e73df';
+        ctx.fillRect(0, 0, size, size);
+        
+        // QR code frame
+        const padding = size * 0.15;
+        const qrSize = size - (padding * 2);
+        
+        ctx.fillStyle = 'white';
+        ctx.fillRect(padding, padding, qrSize, qrSize);
+        
+        // QR code elements
+        ctx.fillStyle = '#4e73df';
+        
+        // Corner squares
+        const cornerSize = qrSize * 0.25;
+        const cornerPadding = qrSize * 0.05;
+        
+        // Top-left corner
+        ctx.fillRect(padding + cornerPadding, padding + cornerPadding, cornerSize, cornerSize);
+        
+        // Top-right corner
+        ctx.fillRect(padding + qrSize - cornerSize - cornerPadding, padding + cornerPadding, cornerSize, cornerSize);
+        
+        // Bottom-left corner
+        ctx.fillRect(padding + cornerPadding, padding + qrSize - cornerSize - cornerPadding, cornerSize, cornerSize);
+        
+        // Center pattern
+        const centerSize = qrSize * 0.4;
+        const centerPos = padding + (qrSize - centerSize) / 2;
+        ctx.fillRect(centerPos, centerPos, centerSize, centerSize);
+        
+        // QR code dots
+        const dotSize = qrSize * 0.06;
+        const dotSpacing = qrSize * 0.12;
+        
+        // Draw a grid of dots
+        for (let i = 0; i < 5; i++) {
+          for (let j = 0; j < 5; j++) {
+            // Skip corners and center
+            if ((i < 2 && j < 2) || (i < 2 && j > 2) || (i > 2 && j < 2) || (i === 2 && j === 2)) {
+              continue;
+            }
+            
+            const x = padding + cornerPadding + cornerSize + (i - 2) * dotSpacing;
+            const y = padding + cornerPadding + cornerSize + (j - 2) * dotSpacing;
+            
+            ctx.fillRect(x, y, dotSize, dotSize);
+          }
+        }
+        
+        // Add a check mark overlay
+        ctx.fillStyle = '#4CAF50';
+        const checkSize = size * 0.3;
+        const checkX = size - checkSize - (size * 0.1);
+        const checkY = size - checkSize - (size * 0.1);
+        
+        ctx.beginPath();
+        ctx.arc(checkX, checkY, checkSize / 2, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Draw check mark
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = size * 0.04;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        
+        ctx.beginPath();
+        ctx.moveTo(checkX - checkSize * 0.2, checkY);
+        ctx.lineTo(checkX - checkSize * 0.05, checkY + checkSize * 0.2);
+        ctx.lineTo(checkX + checkSize * 0.25, checkY - checkSize * 0.2);
+        ctx.stroke();
+      }
+      
+      // Generate icons
+      generateBtn.addEventListener('click', function() {
+        drawQRIcon(ctx192, 192);
+        drawQRIcon(ctx512, 512);
+        
+        // Set download links
+        download192.href = canvas192.toDataURL('image/png');
+        download192.download = 'icon-192x192.png';
+        
+        download512.href = canvas512.toDataURL('image/png');
+        download512.download = 'icon-512x512.png';
+      });
+      
+      // Set up download links
+      download192.addEventListener('click', function() {
+        if (!this.href) {
+          alert('Please generate the icons first!');
+          return false;
+        }
+      });
+      
+      download512.addEventListener('click', function() {
+        if (!this.href) {
+          alert('Please generate the icons first!');
+          return false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

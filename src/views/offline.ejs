@@ -1,0 +1,42 @@
+<!-- Offline Page -->
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+      <div class="card shadow-lg border-0 rounded-lg animate__animated animate__fadeIn">
+        <div class="card-body p-5">
+          <i class="bi bi-wifi-off display-1 text-muted mb-4"></i>
+          <h1 class="mb-4">You're Offline</h1>
+          <p class="lead mb-4">It seems you're not connected to the internet right now. Some features may be unavailable until you reconnect.</p>
+          
+          <div class="offline-features mt-5">
+            <h5 class="mb-3">Available Offline:</h5>
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="card h-100 border-0 bg-light">
+                  <div class="card-body">
+                    <i class="bi bi-shield-check text-primary fs-1 mb-3"></i>
+                    <h5>Verify Products</h5>
+                    <p class="small">You can still verify previously scanned products.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100 border-0 bg-light">
+                  <div class="card-body">
+                    <i class="bi bi-info-circle text-primary fs-1 mb-3"></i>
+                    <h5>View Product Info</h5>
+                    <p class="small">Access information about products you've viewed before.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn btn-primary btn-lg mt-5" onclick="window.location.reload()">
+            <i class="bi bi-arrow-clockwise me-2"></i>Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

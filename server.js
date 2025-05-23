@@ -66,6 +66,29 @@ app.get('/', (req, res) => {
   });
 });
 
+// Offline page route
+app.get('/offline', (req, res) => {
+  res.render('offline', {
+    user: req.session.user
+  });
+});
+
+// Icon generator route (development only)
+app.get('/generate-icons', (req, res) => {
+  if (process.env.NODE_ENV !== 'production') {
+    res.render('generate-icons', { layout: false });
+  } else {
+    res.redirect('/');
+  }
+});
+
+// PWA installation guide
+app.get('/install', (req, res) => {
+  res.render('pwa-guide', { 
+    user: req.session.user 
+  });
+});
+
 // Simple health check route that always returns OK for Railway
 // This ensures the service can start even if the DB is temporarily unavailable
 app.get('/health', (req, res) => {

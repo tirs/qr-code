@@ -12,7 +12,9 @@
     "qr",
     "verification",
     "product",
-    "authenticity"
+    "authenticity",
+    "pwa",
+    "progressive-web-app"
   ],
   "author": "",
   "license": "ISC",

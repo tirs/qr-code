@@ -1,0 +1,157 @@
+<!-- PWA Installation Guide -->
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header bg-primary text-white">
+          <h2 class="mb-0"><i class="bi bi-download me-2"></i>Install Our App</h2>
+        </div>
+        <div class="card-body p-5">
+          <div class="text-center mb-5">
+            <img src="/img/icon-192x192.png" alt="App Icon" class="img-fluid" style="max-width: 150px;">
+            <h3 class="mt-3">QR Code Verification System</h3>
+            <p class="lead">Install our app for a better experience!</p>
+          </div>
+          
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Installing this app will allow you to:
+            <ul class="mt-2 mb-0">
+              <li>Use it offline</li>
+              <li>Access it directly from your home screen</li>
+              <li>Get a more app-like experience</li>
+              <li>Verify products faster</li>
+            </ul>
+          </div>
+          
+          <h4 class="mt-5 mb-4">Installation Instructions</h4>
+          
+          <div class="accordion" id="installInstructions">
+            <!-- Chrome on Android -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#chromeAndroid">
+                  <i class="bi bi-android2 me-2"></i>Chrome on Android
+                </button>
+              </h2>
+              <div id="chromeAndroid" class="accordion-collapse collapse show" data-bs-parent="#installInstructions">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Tap the "Install App" button at the bottom of the screen</li>
+                    <li>Or tap the menu button (three dots) in the top right corner</li>
+                    <li>Select "Install App" or "Add to Home Screen"</li>
+                    <li>Confirm by tapping "Install"</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Safari on iOS -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#safariIOS">
+                  <i class="bi bi-apple me-2"></i>Safari on iOS
+                </button>
+              </h2>
+              <div id="safariIOS" class="accordion-collapse collapse" data-bs-parent="#installInstructions">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Tap the share button (rectangle with arrow) at the bottom of the screen</li>
+                    <li>Scroll down and tap "Add to Home Screen"</li>
+                    <li>Enter a name for the app or use the suggested name</li>
+                    <li>Tap "Add" in the top right corner</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Chrome on Desktop -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#chromeDesktop">
+                  <i class="bi bi-laptop me-2"></i>Chrome on Desktop
+                </button>
+              </h2>
+              <div id="chromeDesktop" class="accordion-collapse collapse" data-bs-parent="#installInstructions">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Click the "Install App" button at the bottom right of the screen</li>
+                    <li>Or click the install icon (computer with down arrow) in the address bar</li>
+                    <li>Click "Install" in the prompt that appears</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Edge on Desktop -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#edgeDesktop">
+                  <i class="bi bi-microsoft me-2"></i>Edge on Desktop
+                </button>
+              </h2>
+              <div id="edgeDesktop" class="accordion-collapse collapse" data-bs-parent="#installInstructions">
+                <div class="accordion-body">
+                  <ol>
+                    <li>Click the "..." menu in the top right corner</li>
+                    <li>Select "Apps" from the menu</li>
+                    <li>Click "Install this site as an app"</li>
+                    <li>Confirm by clicking "Install"</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="text-center mt-5">
+            <button id="install-guide-btn" class="btn btn-primary btn-lg">
+              <i class="bi bi-download me-2"></i>Install Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const installBtn = document.getElementById('install-guide-btn');
+    
+    // Check if the app can be installed
+    if (installBtn) {
+      installBtn.addEventListener('click', function() {
+        // Try to trigger the install prompt if available
+        if (window.deferredPrompt) {
+          window.deferredPrompt.prompt();
+          
+          window.deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the install prompt');
+            } else {
+              console.log('User dismissed the install prompt');
+            }
+            window.deferredPrompt = null;
+          });
+        } else {
+          // If no prompt is available, show instructions based on browser
+          const userAgent = navigator.userAgent;
+          
+          if (/iPhone|iPad|iPod/.test(userAgent)) {
+            // iOS - show Safari instructions
+            document.querySelector('button[data-bs-target="#safariIOS"]').click();
+          } else if (/Android/.test(userAgent)) {
+            // Android - show Chrome instructions
+            document.querySelector('button[data-bs-target="#chromeAndroid"]').click();
+          } else if (/Edg/.test(userAgent)) {
+            // Edge - show Edge instructions
+            document.querySelector('button[data-bs-target="#edgeDesktop"]').click();
+          } else {
+            // Default to Chrome desktop
+            document.querySelector('button[data-bs-target="#chromeDesktop"]').click();
+          }
+        }
+      });
+    }
+  });
+</script>
