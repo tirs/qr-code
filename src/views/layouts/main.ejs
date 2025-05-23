@@ -148,13 +148,57 @@
   <% if (process.env.NODE_ENV !== 'production') { %>
     <!-- PWA Test Script (only in development) -->
     <script src="/js/pwa-test.js"></script>
+    <!-- PWA Debug Script (only in development) -->
+    <script src="/js/pwa-debug.js"></script>
   <% } %>
   
   <!-- Add to Home Screen Button (hidden by default, shown when installation is possible) -->
   <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-    <button id="add-to-home" class="btn btn-primary rounded-pill shadow-sm">
+    <button id="add-to-home" class="btn btn-primary rounded-pill shadow-sm d-none">
       <i class="bi bi-download me-2"></i>Install App
     </button>
   </div>
+  
+  <!-- Debug info for PWA installation (only visible in development) -->
+  <% if (process.env.NODE_ENV !== 'production') { %>
+    <div id="pwa-debug" class="position-fixed bottom-0 start-0 p-3 small text-muted" style="z-index: 11; max-width: 300px; display: none;">
+      <div class="card shadow-sm">
+        <div class="card-body p-2">
+          <h6 class="mb-2">PWA Debug Info</h6>
+          <div id="pwa-debug-content"></div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // Show PWA debug info in development
+      document.addEventListener('DOMContentLoaded', function() {
+        const debugEl = document.getElementById('pwa-debug');
+        const debugContent = document.getElementById('pwa-debug-content');
+        
+        if (debugEl && debugContent) {
+          debugEl.style.display = 'block';
+          
+          // Add debug info
+          const info = [
+            `Protocol: ${window.location.protocol}`,
+            `Standalone: ${window.matchMedia('(display-mode: standalone)').matches}`,
+            `iOS: ${/iPhone|iPad|iPod/.test(navigator.userAgent)}`,
+            `Prompt: ${window.deferredPrompt ? 'Available' : 'Not available'}`
+          ];
+          
+          debugContent.innerHTML = info.map(i => `<div>${i}</div>`).join('');
+          
+          // Update when prompt becomes available
+          window.addEventListener('beforeinstallprompt', () => {
+            debugContent.innerHTML = info.map(i => {
+              if (i.startsWith('Prompt:')) return 'Prompt: Available';
+              return i;
+            }).join('');
+          });
+        }
+      });
+    </script>
+  <% } %>
 </body>
 </html>

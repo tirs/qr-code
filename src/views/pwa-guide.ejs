@@ -119,42 +119,30 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const installBtn = document.getElementById('install-guide-btn');
-    
-    // Check if the app can be installed
-    if (installBtn) {
-      installBtn.addEventListener('click', function() {
-        // Try to trigger the install prompt if available
-        if (window.deferredPrompt) {
-          window.deferredPrompt.prompt();
-          
-          window.deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('User accepted the install prompt');
-            } else {
-              console.log('User dismissed the install prompt');
-            }
-            window.deferredPrompt = null;
-          });
-        } else {
-          // If no prompt is available, show instructions based on browser
-          const userAgent = navigator.userAgent;
-          
-          if (/iPhone|iPad|iPod/.test(userAgent)) {
-            // iOS - show Safari instructions
-            document.querySelector('button[data-bs-target="#safariIOS"]').click();
-          } else if (/Android/.test(userAgent)) {
-            // Android - show Chrome instructions
-            document.querySelector('button[data-bs-target="#chromeAndroid"]').click();
-          } else if (/Edg/.test(userAgent)) {
-            // Edge - show Edge instructions
-            document.querySelector('button[data-bs-target="#edgeDesktop"]').click();
-          } else {
-            // Default to Chrome desktop
-            document.querySelector('button[data-bs-target="#chromeDesktop"]').click();
-          }
-        }
-      });
+    // Show the appropriate installation instructions based on the user's device
+    function showRelevantInstructions() {
+      const userAgent = navigator.userAgent;
+      
+      if (/iPhone|iPad|iPod/.test(userAgent)) {
+        // iOS - show Safari instructions
+        document.querySelector('button[data-bs-target="#safariIOS"]').click();
+      } else if (/Android/.test(userAgent)) {
+        // Android - show Chrome instructions
+        document.querySelector('button[data-bs-target="#chromeAndroid"]').click();
+      } else if (/Edg/.test(userAgent)) {
+        // Edge - show Edge instructions
+        document.querySelector('button[data-bs-target="#edgeDesktop"]').click();
+      } else {
+        // Default to Chrome desktop
+        document.querySelector('button[data-bs-target="#chromeDesktop"]').click();
+      }
     }
+    
+    // Show the relevant instructions when the page loads
+    showRelevantInstructions();
+    
+    // Log installation status for debugging
+    console.log('Installation guide page loaded');
+    console.log('Installation prompt available:', !!window.deferredPrompt);
   });
 </script>
