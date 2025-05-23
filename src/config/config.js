@@ -3,18 +3,40 @@ require('dotenv').config();
 // Check if DB_HOST is a connection string (starts with postgres://)
 const isConnectionString = process.env.DB_HOST && process.env.DB_HOST.startsWith('postgres://');
 
+// SSL configuration for all environments
+const sslConfig = {
+  require: true,
+  rejectUnauthorized: false
+};
+
 // Base configuration for all environments
 const baseConfig = isConnectionString 
   ? {
       // If DB_HOST is a connection string, use it directly
       use_env_variable: 'DB_HOST',
       dialect: 'postgres',
-      logging: false,
+      logging: console.log, // Enable logging for troubleshooting
       dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false
-        }
+        ssl: sslConfig
+      },
+      pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+      },
+      retry: {
+        match: [
+          /SequelizeConnectionError/,
+          /SequelizeConnectionRefusedError/,
+          /SequelizeHostNotFoundError/,
+          /SequelizeHostNotReachableError/,
+          /SequelizeInvalidConnectionError/,
+          /SequelizeConnectionTimedOutError/,
+          /TimeoutError/,
+          /SequelizeDatabaseError/
+        ],
+        max: 5
       }
     }
   : {
@@ -24,8 +46,22 @@ const baseConfig = isConnectionString
       database: process.env.DB_NAME || 'qr_verification_dev',
       host: process.env.DB_HOST || '127.0.0.1',
       dialect: 'postgres',
-      logging: false
+      logging: console.log, // Enable logging for troubleshooting
+      dialectOptions: {
+        ssl: sslConfig
+      },
+      pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+      }
     };
+
+// Disable logging in production
+if (process.env.NODE_ENV === 'production') {
+  baseConfig.logging = false;
+}
 
 module.exports = {
   development: {
@@ -37,11 +73,6 @@ module.exports = {
   },
   production: {
     ...baseConfig,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      }
-    }
+    logging: false
   }
 };
