@@ -1,0 +1,126 @@
+<!-- Hero Section -->
+<div class="row justify-content-center mt-4">
+  <div class="col-md-10 text-center">
+    <div class="mb-5">
+      <h1 class="display-4 mb-3">Product Verification System</h1>
+      <p class="lead">Protect your brand and customers with our secure QR code verification solution</p>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="row">
+  <!-- Verification Form -->
+  <div class="col-lg-6 mb-4">
+    <div class="card verification-form">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-shield-check me-2"></i>Verify Your Product</h5>
+      </div>
+      <div class="card-body">
+        <form action="/verify" method="POST" class="mt-3">
+          <div class="mb-4">
+            <label for="productId" class="form-label">Product ID</label>
+            <input type="text" class="form-control" id="productId" name="productId" placeholder="Enter product ID or scan QR code" required>
+            <div class="form-text">Find the product ID on your product or scan the QR code</div>
+          </div>
+          <div class="mb-4">
+            <label for="lastFourDigits" class="form-label">Last 4 Characters of Verification Code</label>
+            <input type="text" class="form-control last-four-input" id="lastFourDigits" name="lastFourDigits" maxlength="4" placeholder="A12B" pattern="[A-Za-z0-9]{4}" required>
+            <div class="form-text">Enter the last 4 characters of the 16-character code printed on your product (letters and/or numbers)</div>
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="bi bi-check-circle me-2"></i>Verify Product
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Features -->
+  <div class="col-lg-6">
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="feature-container primary text-center h-100">
+          <div class="icon">
+            <i class="bi bi-shield-lock"></i>
+          </div>
+          <h3>Secure</h3>
+          <p>Advanced encryption and unique codes ensure maximum security for your products</p>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="feature-container info text-center h-100">
+          <div class="icon">
+            <i class="bi bi-phone"></i>
+          </div>
+          <h3>Mobile-Friendly</h3>
+          <p>Scan QR codes with any smartphone for instant verification</p>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="feature-container success text-center h-100">
+          <div class="icon">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <h3>Analytics</h3>
+          <p>Track verification attempts and gain insights into your product usage</p>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="feature-container warning text-center h-100">
+          <div class="icon">
+            <i class="bi bi-gear"></i>
+          </div>
+          <h3>Customizable</h3>
+          <p>Tailor the verification system to match your brand and requirements</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- How It Works Section -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="feature-container primary">
+      <h2 class="text-center mb-4">How It Works</h2>
+      <div class="row text-center">
+        <div class="col-md-3 mb-3 mb-md-0">
+          <div class="icon">
+            <i class="bi bi-qr-code"></i>
+          </div>
+          <h4>1. Scan QR Code</h4>
+          <p>Scan the QR code on your product packaging</p>
+        </div>
+        <div class="col-md-3 mb-3 mb-md-0">
+          <div class="icon">
+            <i class="bi bi-123"></i>
+          </div>
+          <h4>2. Enter Code</h4>
+          <p>Enter the last 4 characters of your verification code</p>
+        </div>
+        <div class="col-md-3 mb-3 mb-md-0">
+          <div class="icon">
+            <i class="bi bi-check-circle"></i>
+          </div>
+          <h4>3. Verify</h4>
+          <p>Our system verifies the authenticity of your product</p>
+        </div>
+        <div class="col-md-3">
+          <div class="icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h4>4. Confirmation</h4>
+          <p>Receive instant confirmation of authenticity</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Login Link -->
+<div class="text-center mt-4">
+  <p>Are you an administrator? <a href="/auth/login" class="text-decoration-none">Login here</a></p>
+</div>

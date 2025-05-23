@@ -1,0 +1,163 @@
+/* Bootstrap Dark Mode Overrides */
+
+/* Only apply these styles when dark theme is active */
+[data-theme="dark"] {
+  /* Text colors */
+  --bs-primary-rgb: 126, 157, 255;
+  --bs-secondary-rgb: 177, 177, 195;
+  --bs-success-rgb: 28, 200, 138;
+  --bs-info-rgb: 54, 185, 204;
+  --bs-warning-rgb: 246, 194, 62;
+  --bs-danger-rgb: 231, 74, 59;
+  --bs-light-rgb: 248, 249, 252;
+  --bs-dark-rgb: 224, 224, 224;
+  
+  /* Override Bootstrap components */
+  
+  /* Buttons */
+  .btn-outline-dark {
+    color: #e0e0e0;
+    border-color: #e0e0e0;
+  }
+  
+  .btn-outline-dark:hover {
+    color: #1e1e2d;
+    background-color: #e0e0e0;
+  }
+  
+  .btn-light {
+    color: #1e1e2d;
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+  }
+  
+  /* Modals */
+  .modal-content {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+  }
+  
+  .modal-header, .modal-footer {
+    border-color: var(--border-color);
+  }
+  
+  /* List groups */
+  .list-group-item {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-color);
+  }
+  
+  /* Pagination */
+  .page-link {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--primary-color);
+  }
+  
+  .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .page-item.disabled .page-link {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-muted);
+  }
+  
+  /* Navs and tabs */
+  .nav-tabs {
+    border-color: var(--border-color);
+  }
+  
+  .nav-tabs .nav-link {
+    color: var(--text-color);
+  }
+  
+  .nav-tabs .nav-link.active {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color) var(--border-color) var(--bg-secondary);
+    color: var(--primary-color);
+  }
+  
+  /* Alerts */
+  .alert {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-color);
+  }
+  
+  .alert-danger {
+    background-color: rgba(231, 74, 59, 0.15);
+    border-color: rgba(231, 74, 59, 0.4);
+    color: #e57373;
+  }
+  
+  /* Form controls */
+  .form-control,
+  .form-select {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--text-color);
+  }
+  
+  .form-control:focus,
+  .form-select:focus {
+    background-color: var(--input-bg);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.25);
+    color: var(--text-color);
+  }
+  
+  .form-check-input {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+  }
+  
+  .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .input-group-text {
+    background-color: var(--bg-color);
+    border-color: var(--input-border);
+    color: var(--text-color);
+  }
+  
+  /* Tables */
+  .table {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
+    --bs-table-striped-color: var(--text-color);
+    --bs-table-active-bg: rgba(255, 255, 255, 0.1);
+    --bs-table-active-color: var(--text-color);
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
+    --bs-table-hover-color: var(--text-color);
+  }
+  
+  .table-bordered {
+    border-color: var(--border-color);
+  }
+  
+  .table-bordered th,
+  .table-bordered td {
+    border-color: var(--border-color);
+  }
+  
+  /* Badges */
+  .badge.bg-light {
+    color: #1e1e2d;
+  }
+  
+  .badge.bg-dark {
+    background-color: #e0e0e0 !important;
+    color: #1e1e2d;
+  }
+  
+  /* Progress bars */
+  .progress {
+    background-color: var(--bg-color);
+  }
+}

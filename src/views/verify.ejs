@@ -1,0 +1,134 @@
+<div class="row justify-content-center mt-4">
+  <div class="col-md-8">
+    <div class="card verification-form">
+      <div class="card-header">
+        <h4 class="mb-0"><i class="bi bi-shield-check me-2"></i>Product Verification</h4>
+      </div>
+      <div class="card-body p-4">
+        <% if (error) { %>
+          <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+            <div><%= error %></div>
+          </div>
+        <% } %>
+        
+        <% if (success) { %>
+          <div class="verification-success">
+            <div class="text-center mb-4">
+              <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+              <h3 class="mt-3 text-success"><%= success.message %></h3>
+            </div>
+            
+            <div class="feature-container mb-4">
+              <h5 class="mb-3">Product Details</h5>
+              <div class="row">
+                <div class="col-md-4 fw-bold">Name:</div>
+                <div class="col-md-8"><%= success.product.name %></div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4 fw-bold">SKU:</div>
+                <div class="col-md-8"><%= success.product.sku %></div>
+              </div>
+              <% if (success.product.description) { %>
+                <hr>
+                <div class="row">
+                  <div class="col-md-4 fw-bold">Description:</div>
+                  <div class="col-md-8"><%= success.product.description %></div>
+                </div>
+              <% } %>
+            </div>
+            
+            <div class="alert alert-info d-flex align-items-center" role="alert">
+              <i class="bi bi-info-circle-fill me-2 fs-4"></i>
+              <div>This product has been verified as authentic. Thank you for checking!</div>
+            </div>
+            
+            <div class="text-center mt-4">
+              <a href="/" class="btn btn-primary btn-lg">
+                <i class="bi bi-arrow-repeat me-2"></i>Verify Another Product
+              </a>
+            </div>
+          </div>
+        <% } else { %>
+          <form action="/verify" method="POST">
+            <% if (productId) { %>
+              <input type="hidden" name="productId" value="<%= productId %>">
+              
+              <div class="text-center mb-4">
+                <div class="icon">
+                  <i class="bi bi-upc-scan"></i>
+                </div>
+                <h5 class="mt-2">Enter the Last 4 Characters</h5>
+                <p class="text-muted">Please enter the last 4 characters of the 16-character verification code printed on your product</p>
+              </div>
+              
+              <div class="mb-4">
+                <label for="lastFourDigits" class="form-label">Last 4 Characters</label>
+                <input type="text" class="form-control last-four-input" id="lastFourDigits" name="lastFourDigits" maxlength="4" placeholder="A12B" pattern="[A-Za-z0-9]{4}" required autofocus>
+                <div class="form-text">Enter only the last 4 characters of your verification code (letters and/or numbers)</div>
+              </div>
+            <% } else { %>
+              <div class="mb-4">
+                <label for="productId" class="form-label">Product ID</label>
+                <input type="text" class="form-control" id="productId" name="productId" placeholder="Enter product ID or scan QR code" required>
+                <div class="form-text">Find the product ID on your product or scan the QR code</div>
+              </div>
+              <div class="mb-4">
+                <label for="lastFourDigits" class="form-label">Last 4 Characters of Verification Code</label>
+                <input type="text" class="form-control last-four-input" id="lastFourDigits" name="lastFourDigits" maxlength="4" placeholder="A12B" pattern="[A-Za-z0-9]{4}" required>
+                <div class="form-text">Enter the last 4 characters of the 16-character code printed on your product (letters and/or numbers)</div>
+              </div>
+            <% } %>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i class="bi bi-check-circle me-2"></i>Verify Product
+              </button>
+            </div>
+          </form>
+        <% } %>
+      </div>
+    </div>
+    
+    <div class="text-center mt-4">
+      <a href="/" class="btn btn-link text-decoration-none">
+        <i class="bi bi-house me-1"></i>Back to Home
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Format the last 4 characters input
+  if (document.getElementById('lastFourDigits')) {
+    const input = document.getElementById('lastFourDigits');
+    
+    input.addEventListener('input', function(e) {
+      // Store the current cursor position
+      const start = this.selectionStart;
+      const end = this.selectionEnd;
+      
+      // Remove non-alphanumeric characters
+      const filteredValue = this.value.replace(/[^A-Za-z0-9]/g, '');
+      
+      // Convert to uppercase for better readability
+      const upperValue = filteredValue.toUpperCase();
+      
+      // Limit to 4 characters
+      const finalValue = upperValue.slice(0, 4);
+      
+      // Only update if the value has changed
+      if (this.value !== finalValue) {
+        this.value = finalValue;
+        
+        // Restore cursor position if possible
+        if (start && end) {
+          this.setSelectionRange(start, end);
+        }
+      }
+    });
+    
+    // Focus the input field when the page loads
+    input.focus();
+  }
+</script>
