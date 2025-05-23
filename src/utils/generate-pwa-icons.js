@@ -5,12 +5,21 @@
 
 const fs = require('fs');
 const path = require('path');
-const { createCanvas } = require('canvas');
 
 // Ensure the img directory exists
 const imgDir = path.join(__dirname, '../public/img');
 if (!fs.existsSync(imgDir)) {
   fs.mkdirSync(imgDir, { recursive: true });
+}
+
+// Try to require canvas, but provide a fallback if it fails
+let canvasModule;
+try {
+  canvasModule = require('canvas');
+} catch (error) {
+  console.error('Warning: canvas module failed to load. Using fallback icon generation.');
+  console.error(error.message);
+  canvasModule = null;
 }
 
 // Function to draw QR code icon
@@ -92,18 +101,56 @@ function drawQRIcon(ctx, size) {
   ctx.stroke();
 }
 
-// Generate 192x192 icon
-const canvas192 = createCanvas(192, 192);
-const ctx192 = canvas192.getContext('2d');
-drawQRIcon(ctx192, 192);
-fs.writeFileSync(path.join(imgDir, 'icon-192x192.png'), canvas192.toBuffer('image/png'));
-console.log('✅ Generated 192x192 PWA icon');
+// Main function to generate icons
+function generateIcons() {
+  if (canvasModule) {
+    try {
+      const { createCanvas } = canvasModule;
+      
+      // Generate 192x192 icon
+      const canvas192 = createCanvas(192, 192);
+      const ctx192 = canvas192.getContext('2d');
+      drawQRIcon(ctx192, 192);
+      fs.writeFileSync(path.join(imgDir, 'icon-192x192.png'), canvas192.toBuffer('image/png'));
+      console.log('✅ Generated 192x192 PWA icon');
+      
+      // Generate 512x512 icon
+      const canvas512 = createCanvas(512, 512);
+      const ctx512 = canvas512.getContext('2d');
+      drawQRIcon(ctx512, 512);
+      fs.writeFileSync(path.join(imgDir, 'icon-512x512.png'), canvas512.toBuffer('image/png'));
+      console.log('✅ Generated 512x512 PWA icon');
+      
+      console.log('✅ PWA icons generated successfully');
+      return true;
+    } catch (error) {
+      console.error('Error generating icons with canvas:', error);
+      return false;
+    }
+  }
+  return false;
+}
 
-// Generate 512x512 icon
-const canvas512 = createCanvas(512, 512);
-const ctx512 = canvas512.getContext('2d');
-drawQRIcon(ctx512, 512);
-fs.writeFileSync(path.join(imgDir, 'icon-512x512.png'), canvas512.toBuffer('image/png'));
-console.log('✅ Generated 512x512 PWA icon');
+// Create fallback icons if canvas generation fails
+function createFallbackIcons() {
+  console.log('Creating fallback PWA icons...');
+  
+  // Simple 1x1 pixel PNG files (transparent)
+  const transparentPixel = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64');
+  
+  try {
+    fs.writeFileSync(path.join(imgDir, 'icon-192x192.png'), transparentPixel);
+    fs.writeFileSync(path.join(imgDir, 'icon-512x512.png'), transparentPixel);
+    console.log('✅ Created fallback PWA icons');
+    return true;
+  } catch (error) {
+    console.error('Error creating fallback icons:', error);
+    return false;
+  }
+}
 
-console.log('✅ PWA icons generated successfully');
+// Try to generate icons, fall back if needed
+if (!generateIcons()) {
+  createFallbackIcons();
+}
+
