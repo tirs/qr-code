@@ -14,10 +14,21 @@ exports.renderDashboard = async (req, res) => {
       include: [{
         model: Product,
         as: 'product',
-        attributes: ['name', 'sku']
+        attributes: ['name', 'sku'],
+        required: false // Make this a LEFT JOIN to handle products that might not exist
       }],
       order: [['createdAt', 'DESC']],
       limit: 10
+    });
+    
+    // Process logs to handle null product references
+    const processedLogs = recentLogs.map(log => {
+      const plainLog = log.get({ plain: true });
+      // Ensure product exists, if not provide default values
+      if (!plainLog.product) {
+        plainLog.product = { name: 'Unknown Product', sku: 'N/A' };
+      }
+      return plainLog;
     });
     
     // Get verification stats
@@ -33,21 +44,13 @@ exports.renderDashboard = async (req, res) => {
         validVerifications,
         invalidVerifications
       },
-      recentLogs
+      recentLogs: processedLogs
     });
   } catch (error) {
     console.error('Error rendering dashboard:', error);
-    res.status(500).render('admin/dashboard', {
-      user: req.session.user,
-      stats: {
-        productCount: 0,
-        totalCodes: 0,
-        usedCodes: 0,
-        validVerifications: 0,
-        invalidVerifications: 0
-      },
-      recentLogs: [],
-      error: 'Failed to load dashboard data'
+    res.status(500).render('error', { // Changed to render the error page instead
+      error: 'Failed to load dashboard data. ' + error.message,
+      user: req.session.user
     });
   }
 };
@@ -71,11 +74,22 @@ exports.getVerificationLogs = async (req, res) => {
       include: [{
         model: Product,
         as: 'product',
-        attributes: ['name', 'sku']
+        attributes: ['name', 'sku'],
+        required: false // Make this a LEFT JOIN to handle products that might not exist
       }],
       order: [['createdAt', 'DESC']],
       limit,
       offset
+    });
+    
+    // Process logs to handle null product references
+    const processedLogs = logs.map(log => {
+      const plainLog = log.get({ plain: true });
+      // Ensure product exists, if not provide default values
+      if (!plainLog.product) {
+        plainLog.product = { name: 'Unknown Product', sku: 'N/A' };
+      }
+      return plainLog;
     });
     
     // Get products for filter dropdown
@@ -85,7 +99,7 @@ exports.getVerificationLogs = async (req, res) => {
     
     res.render('admin/logs', {
       user: req.session.user,
-      logs,
+      logs: processedLogs,
       products,
       pagination: {
         current: page,
@@ -96,17 +110,9 @@ exports.getVerificationLogs = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching verification logs:', error);
-    res.status(500).render('admin/logs', {
-      user: req.session.user,
-      logs: [],
-      products: [],
-      pagination: {
-        current: 1,
-        pages: 1,
-        total: 0
-      },
-      filter: req.query,
-      error: 'Failed to fetch verification logs'
+    res.status(500).render('error', { // Changed to render the error page instead
+      error: 'Failed to fetch verification logs. ' + error.message,
+      user: req.session.user
     });
   }
 };

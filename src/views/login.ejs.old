@@ -1,0 +1,189 @@
+<div class="login-wrapper">
+login-page">
+  <div class="login-wrapper">
+    <!-- QR code overlay elements -->
+    <div class="qr-element qr-element-1"></div>
+    <div class="qr-element qr-element-2"></div>
+    <div class="qr-element qr-element-3"></div>
+    
+    <!-- Login form -->
+    <div class="login-form-container">
+     
+    <!-       <div class="login-header text-center">
+              <div class="login-logo">
+                <i class="bi bi-qr-code"></i>
+              </div>
+              <h2>QR Verification System</h2>
+              <p class="text-muted">Admin Portal</p>
+            </div>
+            
+            <% if (error) { %>
+              <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+                <div><%= error %></div>
+              </div>
+            <% } %>
+            
+            <form action="/auth/login" method="POST">
+              <div class="mb-4">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input type="text" class="form-control" id="username" name="username" value="<%= username %>" placeholder="Enter your username" required autofocus>
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-key"></i></span>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-text">Default credentials: admin / admin123</div>
+              </div>
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg login-btn">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </button>
+              </div>
+            </form>
+            
+            <div class="login-footer">
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="/" class="btn btn-link text-decoration-none">
+                  <i class="bi bi-house me-1"></i>Back to Home
+                </a>
+                
+                <!-- Theme toggle -->
+                <div class="theme-switch-wrapper">
+                  <i class="bi bi-sun-fill theme-icon light-icon"></i>
+                  <label class="theme-switch mx-2" for="login-checkbox">
+                    <input type="checkbox" id="login-checkbox" />
+                    <div class="slider"></div>
+                  </label>
+                  <i class="bi bi-moon-fill theme-icon dark-icon"></i>
+                </div>
+              </div>
+              
+              <div class="text-center mt-4">
+                <p class="text-muted small">&copy; <%= new Date().getFullYear() %> QR Code Verification System</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+</div>
+
+<script>
+  // Theme toggle for login page
+  document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('login-checkbox');
+    const htmlElement = document.documentElement;
+    const loginPage = document.querySelector('.login-page');
+    
+    // Background image options
+    const backgroundImages = [
+      'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+      'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+      'https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+    ];
+    
+    // Select a random background image
+    const randomImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+    
+    // Apply the random background image
+    if (loginPage) {
+      // Create a style element
+      const style = document.createElement('style');
+      style.textContent = `
+        .login-page::before {
+          background-image: url('${randomImage}');
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    const loginPage = document.querySelector('.login-page');
+    
+    // Background image options
+    const backgroundImages = [
+      'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+      'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+      'https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+    ];
+    
+    // Select a random background image
+    const randomImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+    
+    // Apply the random background image
+    if (loginPage) {
+      // Create a style element
+      const style = document.createElement('style');
+      style.textContent = `
+        .login-page::before {
+          background-image: url('${randomImage}');
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Set initial theme
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      htmlElement.setAttribute('data-theme', 'dark');
+      themeToggle.checked = true;
+    } else {
+      htmlElement.setAttribute('data-theme', 'light');
+      themeToggle.checked = false;
+    }
+    
+    // Toggle theme when switch is clicked
+    themeToggle.addEventListener('change', function() {
+      if (this.checked) {
+        htmlElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        htmlElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+    
+    // Apply theme immediately on page load
+    const currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+    htmlElement.setAttribute('data-theme', currentTheme);
+    document.body.classList.add('theme-transition-ready');
+    
+    // Add a subtle parallax effect to the background
+    if (loginPage) {
+      document.addEventListener('mousemove', function(e) {
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+        
+        const offsetX = 20 * (mouseX - 0.5);
+        const offsetY = 20 * (mouseY - 0.5);
+        
+        loginPage.style.backgroundPosition = `calc(50% + ${offsetX}px) calc(50% + ${offsetY}px)`;
+      });
+    }
+  });
+</script>
+
+<style>
+  /* Prevent transition flash on page load */
+  body {
+    transition: none !important;
+  }
+  
+  body.theme-transition-ready,
+  body.theme-transition-ready * {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease, 
+                box-shadow 0.3s ease !important;
+  }
+</style>
