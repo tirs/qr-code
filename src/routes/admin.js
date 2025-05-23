@@ -12,7 +12,9 @@ router.get('/dashboard', adminController.renderDashboard);
 
 // Products (redirects to product routes)
 router.get('/products', productController.getAllProducts);
+router.post('/products', productController.createProduct);
 router.get('/products/:id', productController.getProduct);
+router.post('/products/:id', productController.updateProduct);
 router.get('/products/:id/delete', (req, res) => {
   // Redirect to the product delete route
   res.redirect(`/products/${req.params.id}/delete`);
