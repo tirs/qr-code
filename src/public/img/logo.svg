@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="50" viewBox="0 0 200 50">
+  <rect width="50" height="50" rx="6" fill="#4e73df"/>
+  <path d="M12 12h10v10H12z" fill="white"/>
+  <path d="M28 12h10v10H28z" fill="white"/>
+  <path d="M12 28h10v10H12z" fill="white"/>
+  <path d="M28 28h3v3h-3z" fill="white"/>
+  <path d="M35 28h3v3h-3z" fill="white"/>
+  <path d="M28 35h3v3h-3z" fill="white"/>
+  <path d="M35 35h3v3h-3z" fill="white"/>
+  <path d="M24 12h2v2h-2z" fill="white"/>
+  <path d="M24 20h2v2h-2z" fill="white"/>
+  <path d="M12 24h2v2h-2z" fill="white"/>
+  <path d="M20 24h2v2h-2z" fill="white"/>
+  
+  <text x="60" y="30" font-family="Arial, sans-serif" font-weight="bold" font-size="20" fill="#4e73df">QR Verify</text>
+</svg>

@@ -109,4 +109,60 @@ document.addEventListener('DOMContentLoaded', function() {
   if (mainContainer) {
     mainContainer.classList.add('main-content');
   }
+  
+  // Add animation to elements when they come into view
+  const animateOnScroll = () => {
+    const elements = document.querySelectorAll('.feature-container, .card, .how-it-works .step');
+    
+    elements.forEach(element => {
+      const elementTop = element.getBoundingClientRect().top;
+      const elementVisible = 150;
+      
+      if (elementTop < window.innerHeight - elementVisible) {
+        element.classList.add('animate__animated', 'animate__fadeInUp');
+      }
+    });
+  };
+  
+  // Run once on page load
+  animateOnScroll();
+  
+  // Add event listener for scroll
+  window.addEventListener('scroll', animateOnScroll);
+  
+  // Add logo to navbar
+  const navbarBrand = document.querySelector('.navbar-brand');
+  if (navbarBrand) {
+    const logoImg = document.createElement('img');
+    logoImg.src = '/img/logo.svg';
+    logoImg.alt = 'QR Verification';
+    logoImg.style.height = '30px';
+    logoImg.style.marginRight = '10px';
+    
+    // Replace the icon with the logo
+    const icon = navbarBrand.querySelector('i');
+    if (icon) {
+      navbarBrand.replaceChild(logoImg, icon);
+    } else {
+      navbarBrand.prepend(logoImg);
+    }
+  }
+  
+  // Add smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
 });

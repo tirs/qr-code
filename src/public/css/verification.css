@@ -1,0 +1,261 @@
+/**
+ * QR Code Verification System - Verification Page Styles
+ * Enhances the verification page with animations and improved styling
+ */
+
+/* Verification Form Styling */
+.verification-form {
+  max-width: 500px;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+}
+
+.verification-form .card {
+  border-top: 4px solid var(--primary-color);
+  overflow: hidden;
+}
+
+.verification-form .form-control {
+  font-size: 1.2rem;
+  text-align: center;
+  letter-spacing: 0.5rem;
+}
+
+/* Verification Steps */
+.verification-steps {
+  padding: 0.5rem;
+}
+
+.verification-steps .step {
+  display: flex;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.verification-steps .step:not(:last-child):after {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  top: 3rem;
+  bottom: -1.5rem;
+  width: 2px;
+  background-color: var(--primary-color);
+  opacity: 0.3;
+}
+
+.verification-steps .step-number {
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.verification-steps .step-content {
+  flex-grow: 1;
+}
+
+.verification-steps .step-content h5 {
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.verification-steps .step-content p {
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* Verification Code Example */
+.verification-code-example {
+  font-family: monospace;
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: 0.25rem;
+  display: inline-block;
+  border: 1px dashed var(--border-color);
+}
+
+.verification-code-example .last-four {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+/* Last 4 digits input styling */
+.last-four-input {
+  font-size: 2rem !important;
+  letter-spacing: 0.5rem !important;
+  text-align: center !important;
+  font-weight: bold !important;
+  color: var(--primary-color) !important;
+  padding: 1rem 0.75rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.last-four-input:focus {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.25) !important;
+}
+
+/* Verification Success Styling */
+.verification-success {
+  animation: pulse 1s ease-in-out;
+}
+
+.verification-success .icon {
+  font-size: 5rem;
+  color: var(--success-color);
+  margin-bottom: 1rem;
+}
+
+/* Product Details Styling */
+.product-details {
+  background-color: var(--bg-secondary);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid var(--primary-color);
+}
+
+.product-details .row {
+  margin-bottom: 0.5rem;
+}
+
+/* Confetti Animation */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--primary-color);
+  top: -10px;
+  border-radius: 0;
+  animation: confetti-fall 5s linear forwards;
+  opacity: 0.8;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Verification Icons */
+.icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  display: inline-block;
+}
+
+/* How It Works Section */
+.how-it-works {
+  margin: 3rem 0;
+}
+
+.how-it-works .step {
+  text-align: center;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.how-it-works .step:hover {
+  transform: translateY(-5px);
+}
+
+.how-it-works .step .icon {
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.how-it-works .step .icon i {
+  font-size: 2.5rem;
+}
+
+.how-it-works .step h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .last-four-input {
+    font-size: 1.5rem !important;
+  }
+  
+  .verification-success .icon {
+    font-size: 4rem;
+  }
+}
+
+/* Animation for verification success */
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Animation for verification form */
+.verification-form:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-shadow);
+}
+
+/* Placeholder animation */
+@keyframes placeholderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.placeholder-animation {
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeholderShimmer;
+  animation-timing-function: linear;
+  background: linear-gradient(to right, var(--bg-color) 8%, var(--border-color) 18%, var(--bg-color) 33%);
+  background-size: 800px 104px;
+  position: relative;
+}

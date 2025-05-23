@@ -69,11 +69,11 @@ app.get('/', (req, res) => {
 // Simple health check route that always returns OK for Railway
 // This ensures the service can start even if the DB is temporarily unavailable
 app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'ok', 
-    service: 'running',
-    timestamp: new Date().toISOString() 
-  });
+  // Simply return OK status as recommended by Railway
+  res.status(200).send('OK');
+  
+  // Log health check requests
+  console.log(`[${new Date().toISOString()}] Health check request received - responded with 200 OK`);
 });
 
 // Detailed health check route that includes database status
@@ -111,21 +111,49 @@ app.use((err, req, res, next) => {
 // Sync database and start server
 const initializeDatabase = async () => {
   try {
-    console.log('🔄 Connecting to database...');
-    console.log(`Database config: ${process.env.NODE_ENV} mode`);
+    // Start server first to ensure health checks work even if DB is unavailable
+    const PORT = process.env.PORT || 3000;
+    const server = app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`🔗 Health check available at: http://0.0.0.0:${PORT}/health`);
+    });
     
-    // Log database connection info (without sensitive data)
-    if (process.env.DB_HOST && process.env.DB_HOST.startsWith('postgres://')) {
-      try {
-        const dbUrlParts = new URL(process.env.DB_HOST);
-        console.log(`Database connection: postgres://${dbUrlParts.hostname}:${dbUrlParts.port}${dbUrlParts.pathname}`);
-        console.log(`SSL Mode: ${process.env.DB_HOST.includes('sslmode=require') ? 'required' : 'not specified'}`);
-      } catch (urlError) {
-        console.error('❌ Error parsing database URL:', urlError.message);
+    // Handle server errors
+    server.on('error', (err) => {
+      console.error('❌ Server error:', err);
+      process.exit(1);
+    });
+
+    // Log environment variables for debugging (without sensitive data)
+    console.log('🔄 Environment variables:');
+    console.log(`NODE_ENV: ${process.env.NODE_ENV || 'not set'}`);
+    console.log(`PORT: ${process.env.PORT || '3000 (default)'}`);
+    
+    if (process.env.DB_HOST) {
+      if (process.env.DB_HOST.startsWith('postgres://')) {
+        try {
+          const dbUrlParts = new URL(process.env.DB_HOST);
+          console.log(`DB_HOST: postgres://${dbUrlParts.hostname}:${dbUrlParts.port}${dbUrlParts.pathname}`);
+        } catch (urlError) {
+          console.error('❌ Error parsing database URL:', urlError.message);
+          console.log(`DB_HOST is set but invalid: ${process.env.DB_HOST.substring(0, 20)}...`);
+        }
+      } else {
+        console.log(`DB_HOST: ${process.env.DB_HOST}`);
       }
     } else {
-      console.log(`Database connection: ${process.env.DB_HOST || '127.0.0.1'}:${process.env.DB_PORT || '5432'}`);
+      console.error('❌ DB_HOST environment variable is not set');
     }
+    
+    // Check for other required environment variables
+    const requiredVars = ['SESSION_SECRET', 'ADMIN_USERNAME', 'ADMIN_PASSWORD'];
+    const missingVars = requiredVars.filter(varName => !process.env[varName]);
+    if (missingVars.length > 0) {
+      console.warn(`⚠️ Missing environment variables: ${missingVars.join(', ')}`);
+    }
+    
+    console.log('🔄 Connecting to database...');
+    console.log(`Database config: ${process.env.NODE_ENV || 'development'} mode`);
     
     // Log Sequelize configuration
     const dbConfig = require('./src/config/config.js')[process.env.NODE_ENV || 'development'];
@@ -154,37 +182,33 @@ const initializeDatabase = async () => {
           await new Promise(resolve => setTimeout(resolve, 5000));
         } else {
           console.error('❌ All database connection attempts failed.');
-          throw dbError;
+          console.error('⚠️ Application will continue running with limited functionality.');
+          // Don't throw the error, let the app continue with limited functionality
+          return;
         }
       }
     }
     
-    // Sync database models
-    await db.sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
-    console.log('✅ Database synchronized successfully');
-    
-    // Create admin user if it doesn't exist
-    const authController = require('./src/controllers/authController');
-    await authController.initAdmin();
-    console.log('✅ Admin user initialized successfully');
-    
-    // Start server
-    const PORT = process.env.PORT || 3000;
-    const server = app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`🔗 Health check available at: http://localhost:${PORT}/health`);
-    });
-    
-    // Handle server errors
-    server.on('error', (err) => {
-      console.error('❌ Server error:', err);
-      process.exit(1);
-    });
+    if (connected) {
+      try {
+        // Sync database models
+        await db.sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
+        console.log('✅ Database synchronized successfully');
+        
+        // Create admin user if it doesn't exist
+        const authController = require('./src/controllers/authController');
+        await authController.initAdmin();
+        console.log('✅ Admin user initialized successfully');
+      } catch (syncError) {
+        console.error('❌ Database sync failed:', syncError.message);
+        console.error('⚠️ Application will continue running with limited functionality.');
+      }
+    }
     
   } catch (error) {
     console.error('❌ Application initialization failed:', error);
-    // Wait a bit before exiting to ensure logs are written
-    setTimeout(() => process.exit(1), 1000);
+    // Don't exit, let the health check endpoint continue working
+    console.error('⚠️ Application will continue running with limited functionality.');
   }
 };
 

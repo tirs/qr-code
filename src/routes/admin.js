@@ -13,6 +13,10 @@ router.get('/dashboard', adminController.renderDashboard);
 // Products (redirects to product routes)
 router.get('/products', productController.getAllProducts);
 router.get('/products/:id', productController.getProduct);
+router.get('/products/:id/delete', (req, res) => {
+  // Redirect to the product delete route
+  res.redirect(`/products/${req.params.id}/delete`);
+});
 
 // Verification logs
 router.get('/logs', adminController.getVerificationLogs);

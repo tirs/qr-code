@@ -36,9 +36,17 @@ exports.verifyProduct = async (req, res) => {
   try {
     const { productId, lastFourDigits } = req.body;
     
-    if (!lastFourDigits || !productId) {
+    if (!productId) {
       return res.status(400).render('verify', { 
-        error: 'Verification code is required',
+        error: 'Please scan the QR code on your product first',
+        success: null,
+        productId: null
+      });
+    }
+    
+    if (!lastFourDigits) {
+      return res.status(400).render('verify', { 
+        error: 'Please enter the last 4 characters of your verification code',
         success: null,
         productId
       });

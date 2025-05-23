@@ -294,81 +294,140 @@
     setTimeout(() => {
       button.innerHTML = originalHTML;
     }, 1000);
-  }
+    }
   
   // Print codes function
   function printCodes() {
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Verification Codes - <%= product.name %></title>
-          <style>
-            body { font-family: Arial, sans-serif; }
-            .code-container { 
-              display: flex; 
-              flex-wrap: wrap; 
-              gap: 10px; 
-            }
-            .code-card {
-              border: 1px solid #ccc;
-              padding: 10px;
-              width: 300px;
-              margin-bottom: 10px;
-            }
-            .product-name { font-weight: bold; margin-bottom: 5px; }
-            .code { font-family: monospace; letter-spacing: 1px; }
-            .last-four { font-weight: bold; color: #4e73df; }
-            .instructions { font-size: 12px; color: #666; margin-top: 5px; }
-          </style>
-        </head>
-        <body>
-          <h1>Verification Codes - <%= product.name %></h1>
-          <p>SKU: <%= product.sku %></p>
-          <div class="code-container">
-            <% verificationCodes.forEach(code => { %>
-              <div class="code-card">
-                <div class="product-name"><%= product.name %></div>
-                <div class="code">
-                  <%= code.fullCode.substring(0, 12) %><span class="last-four"><%= code.lastFourDigits %></span>
-                </div>
-                <div class="instructions">
-                  To verify authenticity, scan the QR code and enter the last 4 digits: <strong><%= code.lastFourDigits %></strong>
-                </div>
-              </div>
-            <% }) %>
+    try {
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) {
+        alert('Please allow pop-ups for this website to print verification codes.');
+        return;
+      }
+      
+      let codesHtml = '';
+      <% verificationCodes.forEach(code => { %>
+        codesHtml += `
+          <div class="code-card">
+            <div class="product-name"><%= product.name %></div>
+            <div class="code">
+              <%= code.fullCode.substring(0, 12) %><span class="last-four"><%= code.lastFourDigits %></span>
+            </div>
+            <div class="instructions">
+              To verify authenticity, scan the QR code and enter the last 4 digits: <strong><%= code.lastFourDigits %></strong>
+            </div>
           </div>
-          <script>
-            window.onload = function() { window.print(); }
-          </script>
-        </body>
-      </html>`);
-    printWindow.document.close();
+        `;
+      <% }); %>
+      
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Verification Codes - <%= product.name %></title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 20px; }
+              h1 { color: #333; }
+              .code-container { 
+                display: flex; 
+                flex-wrap: wrap; 
+                gap: 10px; 
+              }
+              .code-card {
+                border: 1px solid #ccc;
+                padding: 10px;
+                width: 300px;
+                margin-bottom: 10px;
+                page-break-inside: avoid;
+              }
+              .product-name { font-weight: bold; margin-bottom: 5px; }
+              .code { font-family: monospace; letter-spacing: 1px; font-size: 16px; margin: 10px 0; }
+              .last-four { font-weight: bold; color: #4e73df; }
+              .instructions { font-size: 12px; color: #666; margin-top: 5px; }
+              @media print {
+                .no-print { display: none; }
+                body { margin: 0; }
+                h1 { margin-top: 0; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="no-print" style="margin-bottom: 20px;">
+              <button onclick="window.print();" style="padding: 10px 20px; background: #4e73df; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Print Codes
+              </button>
+              <button onclick="window.close();" style="padding: 10px 20px; background: #e74a3b; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">
+                Close
+              </button>
+            </div>
+            
+            <h1>Verification Codes - <%= product.name %></h1>
+            <p>SKU: <%= product.sku %></p>
+            <div class="code-container">
+              ${codesHtml}
+            </div>
+          </body>
+        </html>
+      `);
+      
+      printWindow.document.close();
+    } catch (error) {
+      console.error('Error printing codes:', error);
+      alert('An error occurred while trying to print the codes. Please try again.');
+    }
   }
   
+  // Pre-generate the verification codes data using EJS as a JSON array
+  const verificationCodesData = <%- JSON.stringify(
+    verificationCodes.map(code => ({
+      productName: product.name,
+      sku: product.sku,
+      fullCode: code.fullCode,
+      lastFourDigits: code.lastFourDigits,
+      status: code.isUsed ? 'Used' : 'Available',
+      usedAt: code.usedAt ? new Date(code.usedAt).toLocaleString() : 'N/A',
+      usedBy: code.usedBy || 'N/A'
+    }))
+  ) %>;
+
   // Export codes to CSV
   function exportCodes() {
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Product Name,SKU,Full Code,Last 4 Digits,Status,Used At,Used By\n";
-    
-    // Pre-generate the CSV content server-side
-    const csvRows = [
-      <% verificationCodes.forEach(code => { %>
-        `<%= product.name.replace(/"/g, '""') %>,<%= product.sku.replace(/"/g, '""') %>,<%= code.fullCode %>,<%= code.lastFourDigits %>,<%= code.isUsed ? 'Used' : 'Available' %>,<%= code.usedAt ? new Date(code.usedAt).toLocaleString().replace(/"/g, '""') : 'N/A' %>,<%= (code.usedBy || 'N/A').replace(/"/g, '""') %>`,
-      <% }) %>
-    ];
-    
-    // Add each row to the CSV content
-    csvRows.forEach(row => {
-      csvContent += row + "\n";
-    });
-    
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "verification-codes-<%= product.sku %>.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      // CSV header
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Product Name,SKU,Full Code,Last 4 Digits,Status,Used At,Used By\n";
+      
+      // Use the pre-generated array of verification code data
+      const codes = verificationCodesData;
+      
+      // Add each row to the CSV content
+      codes.forEach(code => {
+        const row = [
+          code.productName,
+          code.sku,
+          code.fullCode,
+          code.lastFourDigits,
+          code.status,
+          code.usedAt,
+          code.usedBy
+        ].join(',');
+        
+        csvContent += row + "\n";
+      });
+      
+      // Create download link
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "verification-codes-<%= product.sku %>.csv");
+      
+      // Trigger download
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+    } catch (error) {
+      console.error('Error exporting codes to CSV:', error);
+      alert('An error occurred while trying to export the codes. Please try again.');
+    }
   }
 </script>

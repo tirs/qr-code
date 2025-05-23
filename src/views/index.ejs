@@ -1,39 +1,77 @@
 <!-- Hero Section -->
-<div class="row justify-content-center mt-4">
+<div class="row justify-content-center mt-4 animate__animated animate__fadeIn">
   <div class="col-md-10 text-center">
     <div class="mb-5">
       <h1 class="display-4 mb-3">Product Verification System</h1>
       <p class="lead">Protect your brand and customers with our secure QR code verification solution</p>
+      <div class="mt-4">
+        <a href="#verify-section" class="btn btn-primary btn-lg me-2">
+          <i class="bi bi-shield-check me-2"></i>Verify a Product
+        </a>
+        <a href="#how-it-works" class="btn btn-outline-primary btn-lg">
+          <i class="bi bi-info-circle me-2"></i>How It Works
+        </a>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Main Content -->
-<div class="row">
-  <!-- Verification Form -->
-  <div class="col-lg-6 mb-4">
+<div class="row" id="verify-section">
+  <!-- Verification Instructions -->
+  <div class="col-lg-6 mb-4 animate__animated animate__fadeInLeft">
     <div class="card verification-form">
       <div class="card-header">
         <h5 class="mb-0"><i class="bi bi-shield-check me-2"></i>Verify Your Product</h5>
       </div>
       <div class="card-body">
-        <form action="/verify" method="POST" class="mt-3">
-          <div class="mb-4">
-            <label for="productId" class="form-label">Product ID</label>
-            <input type="text" class="form-control" id="productId" name="productId" placeholder="Enter product ID or scan QR code" required>
-            <div class="form-text">Find the product ID on your product or scan the QR code</div>
+        <div class="text-center mb-4">
+          <div class="icon">
+            <i class="bi bi-qr-code-scan"></i>
           </div>
-          <div class="mb-4">
-            <label for="lastFourDigits" class="form-label">Last 4 Characters of Verification Code</label>
-            <input type="text" class="form-control last-four-input" id="lastFourDigits" name="lastFourDigits" maxlength="4" placeholder="A12B" pattern="[A-Za-z0-9]{4}" required>
-            <div class="form-text">Enter the last 4 characters of the 16-character code printed on your product (letters and/or numbers)</div>
+          <h5 class="mt-2">Product Verification</h5>
+          <p class="text-muted">Follow these simple steps to verify your product's authenticity</p>
+        </div>
+        
+        <div class="verification-steps">
+          <div class="step mb-4">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h5>Scan the QR Code</h5>
+              <p>Use your smartphone camera to scan the QR code printed on your product or packaging</p>
+              <div class="text-center my-3">
+                <img src="/img/scan-qr-illustration.svg" alt="Scan QR Code" class="img-fluid" style="max-height: 120px;">
+              </div>
+            </div>
           </div>
-          <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary btn-lg">
-              <i class="bi bi-check-circle me-2"></i>Verify Product
-            </button>
+          
+          <div class="step mb-4">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h5>Enter Verification Code</h5>
+              <p>After scanning, you'll be asked to enter the last 4 characters of the 16-digit verification code printed on your product</p>
+              <div class="text-center my-3">
+                <div class="verification-code-example">
+                  <span class="text-muted">XXXX-XXXX-XXXX-</span><span class="last-four">A12B</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </form>
+          
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h5>Get Instant Verification</h5>
+              <p>Our system will instantly verify your product and show you the results</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="d-grid gap-2 mt-4">
+          <a href="#how-it-works" class="btn btn-primary btn-lg">
+            <i class="bi bi-info-circle me-2"></i>Learn More
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -82,38 +120,76 @@
 </div>
 
 <!-- How It Works Section -->
-<div class="row mt-4">
+<div class="row mt-5" id="how-it-works">
   <div class="col-12">
     <div class="feature-container primary">
       <h2 class="text-center mb-4">How It Works</h2>
-      <div class="row text-center">
-        <div class="col-md-3 mb-3 mb-md-0">
+      <div class="row text-center how-it-works">
+        <div class="col-md-3 mb-3 mb-md-0 step">
           <div class="icon">
             <i class="bi bi-qr-code"></i>
           </div>
           <h4>1. Scan QR Code</h4>
-          <p>Scan the QR code on your product packaging</p>
+          <p>Scan the QR code on your product packaging using your smartphone camera</p>
         </div>
-        <div class="col-md-3 mb-3 mb-md-0">
+        <div class="col-md-3 mb-3 mb-md-0 step">
           <div class="icon">
             <i class="bi bi-123"></i>
           </div>
           <h4>2. Enter Code</h4>
-          <p>Enter the last 4 characters of your verification code</p>
+          <p>Enter the last 4 characters of the 16-digit verification code printed on your product</p>
         </div>
-        <div class="col-md-3 mb-3 mb-md-0">
+        <div class="col-md-3 mb-3 mb-md-0 step">
           <div class="icon">
             <i class="bi bi-check-circle"></i>
           </div>
           <h4>3. Verify</h4>
-          <p>Our system verifies the authenticity of your product</p>
+          <p>Our secure system instantly verifies the authenticity of your product</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 step">
           <div class="icon">
             <i class="bi bi-shield-check"></i>
           </div>
           <h4>4. Confirmation</h4>
-          <p>Receive instant confirmation of authenticity</p>
+          <p>Receive immediate confirmation that your product is genuine</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Why Verify Section -->
+<div class="row mt-5">
+  <div class="col-12">
+    <div class="feature-container success">
+      <h2 class="text-center mb-4">Why Verify Your Products?</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+              <i class="bi bi-shield-fill-check text-success mb-3" style="font-size: 2.5rem;"></i>
+              <h4>Ensure Authenticity</h4>
+              <p>Verify that you've purchased a genuine product, not a counterfeit imitation.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+              <i class="bi bi-patch-check-fill text-primary mb-3" style="font-size: 2.5rem;"></i>
+              <h4>Protect Yourself</h4>
+              <p>Counterfeit products may be unsafe or ineffective. Verification helps protect you.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+              <i class="bi bi-award-fill text-warning mb-3" style="font-size: 2.5rem;"></i>
+              <h4>Support Brands</h4>
+              <p>By verifying products, you help combat counterfeiting and support legitimate businesses.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

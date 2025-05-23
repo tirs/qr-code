@@ -49,46 +49,67 @@ A secure and reliable product verification system to protect your brand and cust
 
 ### Prerequisites
 
-1. [Railway account](https://railway.app/)
-2. [Railway CLI](https://docs.railway.app/develop/cli) (optional)
-3. PostgreSQL database (can be provisioned on Railway)
-
-### Steps to Deploy
-
-1. **Create a new project on Railway**
-
-   ```bash
-   railway init
+1. **Railway Account**: Create an account at [Railway.app](https://railway.app/)
+2. **Railway CLI**: Install the Railway CLI tool
+   ```
+   npm install -g @railway/cli
+   ```
+3. **Login to Railway CLI**
+   ```
+   railway login
    ```
 
-2. **Add a PostgreSQL database**
+### Automated Deployment
 
-   From the Railway dashboard, add a PostgreSQL database to your project.
+Run the deployment script:
 
-3. **Set environment variables**
+```bash
+node deploy.js
+```
 
-   Set the following environment variables in the Railway dashboard:
+Follow the prompts to enter your Railway project name and confirm deployment.
 
+### Manual Deployment
+
+1. **Create a New Project on Railway**
+   - Go to [Railway Dashboard](https://railway.app/dashboard)
+   - Click "New Project"
+   - Select "Deploy from GitHub repo" or "Empty Project"
+   - Add a PostgreSQL database from the Railway dashboard
+
+2. **Configure Environment Variables**
+   Set the following environment variables in your Railway project:
+   - `PORT`: 3000 (or your preferred port)
    - `DB_HOST`: Your PostgreSQL connection string (provided by Railway)
-   - `SESSION_SECRET`: A strong random string
-   - `ADMIN_USERNAME`: Admin username
-   - `ADMIN_PASSWORD`: Admin password
+   - `SESSION_SECRET`: A secure random string for session encryption
+   - `ADMIN_USERNAME`: Admin username for the dashboard
+   - `ADMIN_PASSWORD`: Admin password for the dashboard
    - `NODE_ENV`: production
 
-4. **Deploy your application**
+3. **Link to Your Railway Project**
+   ```
+   railway link --environment production --project YOUR_PROJECT_NAME
+   ```
 
-   Connect your GitHub repository or deploy directly using the Railway CLI:
-
-   ```bash
+4. **Deploy the Application**
+   ```
    railway up
    ```
 
-5. **Reset admin password if needed**
+5. **Check Deployment Status**
+   ```
+   railway status
+   ```
 
+6. **Open the Deployed Application**
+   ```
+   railway open
+   ```
+
+7. **Reset admin password if needed**
    If you need to reset the admin password after deployment, you can run:
-
    ```bash
-   railway run node reset-admin.js
+   railway run node create-admin.js
    ```
 
 ### Automatic Deployments

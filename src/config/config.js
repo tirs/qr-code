@@ -1,7 +1,17 @@
 require('dotenv').config();
 
-// Check if DB_HOST is a connection string (starts with postgres://)
-const isConnectionString = process.env.DB_HOST && process.env.DB_HOST.startsWith('postgres://');
+// Check if DB_HOST is a connection string (starts with postgres:// or postgresql://)
+const isConnectionString = process.env.DB_HOST && 
+  (process.env.DB_HOST.startsWith('postgres://') || process.env.DB_HOST.startsWith('postgresql://'));
+
+// Keep the original postgresql:// protocol
+// Commenting out the conversion to maintain the original database link
+/*
+if (process.env.DB_HOST && process.env.DB_HOST.startsWith('postgresql://')) {
+  process.env.DB_HOST = process.env.DB_HOST.replace('postgresql://', 'postgres://');
+  console.log('Converted postgresql:// to postgres:// for Sequelize compatibility');
+}
+*/
 
 // SSL configuration for all environments
 const sslConfig = {
