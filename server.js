@@ -71,11 +71,6 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Health check route for Railway
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -86,19 +81,29 @@ app.use((err, req, res, next) => {
 });
 
 // Sync database and start server
-db.sequelize.sync({ alter: process.env.NODE_ENV === 'development' })
-  .then(() => {
+const initializeDatabase = async () => {
+  try {
+    console.log('Connecting to database...');
+    
+    // Sync database models
+    await db.sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
+    console.log('Database synchronized successfully');
+    
     // Create admin user if it doesn't exist
     const authController = require('./src/controllers/authController');
-    return authController.initAdmin();
-  })
-  .then(() => {
+    await authController.initAdmin();
+    console.log('Admin user initialized successfully');
+    
     // Start server
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
+  } catch (error) {
+    console.error('Database initialization failed:', error);
+    process.exit(1);
+  }
+};
+
+// Initialize database and start server
+initializeDatabase();
